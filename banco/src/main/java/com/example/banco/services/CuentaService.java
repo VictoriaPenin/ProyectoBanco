@@ -21,17 +21,19 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class CuentaService {
-
-    @Autowired
     private CuentaRepository cuentaRepository;
-
-    @Autowired
     private ClienteRepository clienteRepository;
-
-    @Autowired
     private SucursalRepository sucursalRepository;
-    @Autowired
     private ModelMapper modelMapper;
+
+    // Constructor parametrizado para inyectar las dependencias
+    public CuentaService(CuentaRepository cuentaRepository, ClienteRepository clienteRepository,
+                         SucursalRepository sucursalRepository, ModelMapper modelMapper) {
+        this.cuentaRepository = cuentaRepository;
+        this.clienteRepository = clienteRepository;
+        this.sucursalRepository = sucursalRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public CuentaDTO crearCuenta(CuentaDTO cuentaDTO) {
         Cuenta cuenta = modelMapper.map(cuentaDTO, Cuenta.class);
@@ -121,4 +123,54 @@ public class CuentaService {
             throw new IllegalArgumentException("Cliente no encontrado con ID: " + clienteId);
         }
     }
+    public CuentaDTO ingresarDinero(Long cuentaId, double monto) {
+        Cuenta cuenta = cuentaRepository.findById(cuentaId).orElse(null);
+        if (cuenta != null) {
+            cuenta.setSaldo(cuenta.getSaldo() + monto);
+            cuentaRepository.save(cuenta);
+            return modelMapper.map(cuenta, CuentaDTO.class);
+        } else {
+            return null; // Cuenta no encontrada.
+        }
+    }
+
+    public CuentaDTO extraerDinero(Long cuentaId, double monto) {
+        Cuenta cuenta = cuentaRepository.findById(cuentaId).orElse(null);
+        if (cuenta != null) {
+            if (cuenta.getSaldo() >= monto) {
+                cuenta.setSaldo(cuenta.getSaldo() - monto);
+                cuentaRepository.save(cuenta);
+                return modelMapper.map(cuenta, CuentaDTO.class);
+            } else {
+                return null; // Saldo insuficiente para realizar la extracción.
+            }
+        } else {
+            return null; // Cuenta no encontrada.
+        }
+    }
+
+    // En CuentaService
+    // En CuentaService
+    /*public CuentaDTO crearPlazoFijo(Long clienteId, double monto, int plazoEnDias) {
+        Cliente cliente = clienteRepository.findById(clienteId).orElse(null);
+
+        if (cliente != null) {
+            // Crear una nueva cuenta de plazo fijo y configurar sus propiedades
+            Cuenta plazoFijo = new Cuenta();
+            plazoFijo.setTipoCuenta("PLAZO_FIJO"); // Aquí debes usar el valor correcto para el tipo de cuenta
+            plazoFijo.setSaldo(monto);
+            plazoFijo.setPlazoEnDias(plazoEnDias);
+            // Puedes configurar otras propiedades como la tasa de interés si es necesario
+            plazoFijo.setCliente(cliente); // Asociar el cliente a la nueva cuenta de plazo fijo
+
+            // Guardar la nueva cuenta de plazo fijo en la base de datos
+            plazoFijo = cuentaRepository.save(plazoFijo);
+
+            return modelMapper.map(plazoFijo, CuentaDTO.class);
+        } else {
+            return null;
+        }
+    }
+*/
+
 }

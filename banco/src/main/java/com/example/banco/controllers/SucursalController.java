@@ -3,33 +3,44 @@ package com.example.banco.controllers;
 import com.example.banco.DTO.ClienteDTO;
 import com.example.banco.DTO.CuentaDTO;
 import com.example.banco.DTO.SucursalDTO;
-import com.example.banco.entities.Cliente;
-import com.example.banco.entities.Cuenta;
-import com.example.banco.entities.Sucursal;
 import com.example.banco.services.SucursalService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+
 
 @RestController
 @RequestMapping("sucursales")
 public class SucursalController {
 
-    @Autowired
-    private SucursalService sucursalService;
+    private final SucursalService sucursalService;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    public SucursalController(SucursalService sucursalService, ModelMapper modelMapper) {
+        this.sucursalService = sucursalService;
+        this.modelMapper = modelMapper;
+    }
+
+
 
     @PostMapping("/crear")
     public ResponseEntity<SucursalDTO> crearSucursal(@RequestBody SucursalDTO sucursalDTO) {
         SucursalDTO nuevaSucursalDTO = sucursalService.crearSucursal(sucursalDTO);
         return new ResponseEntity<>(nuevaSucursalDTO, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{sucursalId}/crear-cliente")
+    public ResponseEntity<ClienteDTO> crearCliente(@PathVariable Long sucursalId, @RequestBody ClienteDTO clienteDTO) {
+        ClienteDTO nuevoClienteDTO = sucursalService.crearClienteConCuenta(sucursalId, clienteDTO);
+        if (nuevoClienteDTO != null) {
+            return new ResponseEntity<>(nuevoClienteDTO, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Puedes devolver un mensaje de error específico aquí.
+        }
     }
 
     @GetMapping("/{sucursalId}/cuentas")

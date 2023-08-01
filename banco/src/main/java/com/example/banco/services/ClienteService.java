@@ -3,8 +3,7 @@ package com.example.banco.services;
 import com.example.banco.DTO.ClienteDTO;
 import com.example.banco.entities.Cliente;
 import com.example.banco.repositories.ClienteRepository;
-import org.modelmapper.ModelMapper; // Importa la clase ModelMapper correcta
-import org.springframework.beans.factory.annotation.Autowired; // Importa la anotación @Autowired correcta
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -14,10 +13,14 @@ import java.util.stream.Collectors;
 @Transactional
 public class ClienteService {
 
-    @Autowired
-    private ClienteRepository clienteRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+
+    private final ClienteRepository clienteRepository;
+    private final ModelMapper modelMapper;
+
+    public ClienteService(ClienteRepository clienteRepository, ModelMapper modelMapper) {
+        this.clienteRepository = clienteRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public ClienteDTO crearCliente(ClienteDTO clienteDTO) {
         Cliente cliente = modelMapper.map(clienteDTO, Cliente.class);

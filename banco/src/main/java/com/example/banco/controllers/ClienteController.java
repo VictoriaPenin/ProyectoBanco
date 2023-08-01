@@ -1,21 +1,28 @@
 package com.example.banco.controllers;
 
 import com.example.banco.DTO.ClienteDTO;
-import com.example.banco.entities.Cliente;
 import com.example.banco.services.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
+
 
 @RestController
 @RequestMapping("clientes")
 public class ClienteController {
 
-    @Autowired
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
+    private final ModelMapper modelMapper;
+
+    public ClienteController(ClienteService clienteService, ModelMapper modelMapper) {
+        this.clienteService = clienteService;
+        this.modelMapper = modelMapper;
+    }
+
+
 
     //crear cliente
     @PostMapping("/crear")

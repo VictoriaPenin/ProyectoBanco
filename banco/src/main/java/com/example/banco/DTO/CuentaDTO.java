@@ -4,11 +4,13 @@ import com.example.banco.entities.Cliente;
 import com.example.banco.entities.Sucursal;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
 public class CuentaDTO {
     private Long id;
+    @NotBlank(message = "El tipo de cuenta no puede ser nulo")
     private String tipoCuenta;
     private double saldo;
     private Boolean estado;

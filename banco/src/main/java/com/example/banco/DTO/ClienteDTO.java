@@ -2,20 +2,29 @@ package com.example.banco.DTO;
 
 import com.example.banco.entities.Cuenta;
 import com.example.banco.entities.Sucursal;
+import com.example.banco.entities.TipoCuenta;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
 public class ClienteDTO {
     private Long id;
+    @NotBlank(message = "El nombre no puede estar vacío")
+
     private String nombre;
+    @NotBlank(message = "El apellido no puede estar vacío")
+
     private String apellido;
     private String domicilio;
     private String telefono;
-    private int dni;
+    @NotBlank(message = "El DNI no puede ser nulo")
+    @Size(min = 8, max = 8, message = "El DNI debe tener 8 dígitos")
+    private String dni;
     private String email;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
@@ -25,10 +34,12 @@ public class ClienteDTO {
     @JoinColumn(name = "sucursal_id")
     private Sucursal sucursal;
 
+    private TipoCuenta tipoCuenta;
+
     public ClienteDTO() {
     }
 
-    public ClienteDTO(Long id, String nombre, String apellido, String domicilio, String telefono, int dni, String email, List<Cuenta> cuentas, Sucursal sucursal) {
+    public ClienteDTO(Long id, String nombre, String apellido, String domicilio, String telefono, String dni, String email, List<Cuenta> cuentas, Sucursal sucursal, TipoCuenta tipoCuenta) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -38,6 +49,7 @@ public class ClienteDTO {
         this.email = email;
         this.cuentas = cuentas;
         this.sucursal = sucursal;
+        this.tipoCuenta = tipoCuenta;
     }
 
     public Long getId() {
@@ -80,11 +92,11 @@ public class ClienteDTO {
         this.telefono = telefono;
     }
 
-    public int getDni() {
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(int dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 
@@ -112,6 +124,14 @@ public class ClienteDTO {
         this.sucursal = sucursal;
     }
 
+    public TipoCuenta getTipoCuenta() {
+        return tipoCuenta;
+    }
+
+    public void setTipoCuenta(TipoCuenta tipoCuenta) {
+        this.tipoCuenta = tipoCuenta;
+    }
+
     @Override
     public String toString() {
         return "ClienteDTO{" +
@@ -120,11 +140,11 @@ public class ClienteDTO {
                 ", apellido='" + apellido + '\'' +
                 ", domicilio='" + domicilio + '\'' +
                 ", telefono='" + telefono + '\'' +
-                ", dni=" + dni +
+                ", dni='" + dni + '\'' +
                 ", email='" + email + '\'' +
                 ", cuentas=" + cuentas +
                 ", sucursal=" + sucursal +
+                ", tipoCuenta=" + tipoCuenta +
                 '}';
     }
 }
-
