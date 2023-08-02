@@ -1,6 +1,7 @@
 package com.example.banco.controllers;
 
 
+import com.example.banco.DTO.ClienteDTO;
 import com.example.banco.DTO.SucursalDTO;
 import com.example.banco.services.SucursalService;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ public class SucursalController {
 
     private final SucursalService sucursalService;
     private final ModelMapper modelMapper;
+    private SucursalDTO updateSucursalDTO;
 
     public SucursalController(SucursalService sucursalService, ModelMapper modelMapper) {
         this.sucursalService = sucursalService;
@@ -28,7 +30,7 @@ public class SucursalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSucursalDTO);
     }
 
-    @GetMapping
+    @GetMapping("listar")
     public ResponseEntity<List<SucursalDTO>> getAllSucursales() {
         List<SucursalDTO> sucursalDTOs = sucursalService.getAllSucursales();
         return ResponseEntity.ok(sucursalDTOs);
@@ -47,5 +49,14 @@ public class SucursalController {
     public ResponseEntity<Void> deleteSucursal(@PathVariable Long id) {
         sucursalService.deleteSucursal(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SucursalDTO> updateSucursal(@PathVariable Long id, @RequestBody SucursalDTO sucursalDTO) {
+        SucursalDTO updatedSucursalDTO = sucursalService.updateSucursal(id, sucursalDTO);
+        if (updateSucursalDTO != null) {
+            return ResponseEntity.ok(updateSucursalDTO);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

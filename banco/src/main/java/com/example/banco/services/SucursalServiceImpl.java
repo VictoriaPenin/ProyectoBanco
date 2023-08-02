@@ -40,14 +40,16 @@ public class SucursalServiceImpl implements SucursalService {
     @Override
     public SucursalDTO findSucursalById(Long id) {
         Optional<Sucursal> optionalSucursal = sucursalRepository.findById(id);
-        if (optionalSucursal.isPresent()) {
-            return modelMapper.map(optionalSucursal.get(), SucursalDTO.class);
-        }
-        return null;
+        return optionalSucursal.map(sucursal -> modelMapper.map(sucursal, SucursalDTO.class)).orElse(null);
     }
 
     @Override
     public void deleteSucursal(Long id) {
         sucursalRepository.deleteById(id);
+    }
+
+    @Override
+    public SucursalDTO updateSucursal(Long id, SucursalDTO sucursalDTO) {
+        return null;
     }
 }

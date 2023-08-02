@@ -6,35 +6,36 @@ import java.time.LocalDate;
 
 @Entity
 public class Transaccion {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Enumerated(EnumType.STRING)
     private TipoTransaccion tipoTransaccion;
-
-    @ManyToOne
-    @JoinColumn(name = "cuenta_id")
-    private Cuenta cuenta;
+    private Long idCuentaOrigen;
+    private Long idCuentaDestino;
+    private double monto;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    private double monto;
     private LocalDate fecha;
+
+    @ManyToOne
+    @JoinColumn(name = "cuenta_id")
+    private Cuenta cuenta;
 
     public Transaccion() {
     }
 
-    public Transaccion(Long id, TipoTransaccion tipoTransaccion, Cuenta cuenta, Cliente cliente, double monto, LocalDate fecha) {
+    public Transaccion(Long id, TipoTransaccion tipoTransaccion, Long idCuentaOrigen, Long idCuentaDestino, double monto, Cliente cliente, LocalDate fecha, Cuenta cuenta) {
         this.id = id;
         this.tipoTransaccion = tipoTransaccion;
-        this.cuenta = cuenta;
-        this.cliente = cliente;
+        this.idCuentaOrigen = idCuentaOrigen;
+        this.idCuentaDestino = idCuentaDestino;
         this.monto = monto;
+        this.cliente = cliente;
         this.fecha = fecha;
+        this.cuenta = cuenta;
     }
 
     public Long getId() {
@@ -53,20 +54,20 @@ public class Transaccion {
         this.tipoTransaccion = tipoTransaccion;
     }
 
-    public Cuenta getCuenta() {
-        return cuenta;
+    public Long getIdCuentaOrigen() {
+        return idCuentaOrigen;
     }
 
-    public void setCuenta(Cuenta cuenta) {
-        this.cuenta = cuenta;
+    public void setIdCuentaOrigen(Long idCuentaOrigen) {
+        this.idCuentaOrigen = idCuentaOrigen;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Long getIdCuentaDestino() {
+        return idCuentaDestino;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setIdCuentaDestino(Long idCuentaDestino) {
+        this.idCuentaDestino = idCuentaDestino;
     }
 
     public double getMonto() {
@@ -77,6 +78,14 @@ public class Transaccion {
         this.monto = monto;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public LocalDate getFecha() {
         return fecha;
     }
@@ -85,15 +94,25 @@ public class Transaccion {
         this.fecha = fecha;
     }
 
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
+    }
+
     @Override
     public String toString() {
         return "Transaccion{" +
                 "id=" + id +
                 ", tipoTransaccion=" + tipoTransaccion +
-                ", cuenta=" + cuenta +
-                ", cliente=" + cliente +
+                ", idCuentaOrigen=" + idCuentaOrigen +
+                ", idCuentaDestino=" + idCuentaDestino +
                 ", monto=" + monto +
+                ", cliente=" + cliente +
                 ", fecha=" + fecha +
+                ", cuenta=" + cuenta +
                 '}';
     }
 }

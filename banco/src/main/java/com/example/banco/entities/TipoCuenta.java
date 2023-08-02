@@ -1,7 +1,7 @@
 package com.example.banco.entities;
 
 public enum TipoCuenta {
-    AHORROS,
-    CORRIENTE,
+   CAJA_DE_AHORROS,
+    CUENTA_CORRIENTE,
     PLAZO_FIJO
 }

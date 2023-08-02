@@ -10,4 +10,6 @@ public interface SucursalService {
     List<SucursalDTO> getAllSucursales();
     SucursalDTO findSucursalById(Long id);
     void deleteSucursal(Long id);
+
+    SucursalDTO updateSucursal(Long id, SucursalDTO sucursalDTO);
 }

@@ -19,9 +19,9 @@ public class Cliente {
     private String email;
     private TipoCuenta tipoCuenta;
 
+
     @OneToMany(mappedBy = "cliente") // Nombre de la propiedad en la clase Cuenta que hace referencia al Cliente
     private List<Cuenta> cuentas;
-
 
     @ManyToOne
     @JoinColumn(name = "sucursal_id")

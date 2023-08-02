@@ -27,9 +27,6 @@ public class Cuenta {
     @OneToMany(mappedBy = "cuenta", cascade = CascadeType.ALL)
     private List<Transaccion> transacciones = new ArrayList<>();
 
-
-
-
     public Cuenta() {
     }
 
@@ -108,12 +105,17 @@ public class Cuenta {
         this.transacciones = transacciones;
     }
 
-
-
-
-
-    public void agregarTransaccion(Transaccion transaccion) {
-        transacciones.add(transaccion);
-        transaccion.setCuenta(this);
+    @Override
+    public String toString() {
+        return "Cuenta{" +
+                "id=" + id +
+                ", tipoCuenta='" + tipoCuenta + '\'' +
+                ", saldo=" + saldo +
+                ", estado=" + estado +
+                ", fechaAlta=" + fechaAlta +
+                ", sucursal=" + sucursal +
+                ", cliente=" + cliente +
+                ", transacciones=" + transacciones +
+                '}';
     }
 }
